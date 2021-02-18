@@ -8,6 +8,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Shadow;
 import javafx.scene.paint.Color;
@@ -21,9 +23,8 @@ import java.awt.*;
 public class Controller {
     @FXML
     public Canvas img1;
-
-
-
+    public TextField top;
+    public Label label;
 
 
     @FXML
@@ -42,5 +43,6 @@ public class Controller {
     @FXML private void drawCanvas(ActionEvent event) {
         gc.setFill(Color.grayRgb(5));
         gc.fillRect(10,10,10,10);
+        label.setText("hallo");
     }
 }
