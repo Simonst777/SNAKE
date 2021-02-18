@@ -4,11 +4,15 @@ package sample;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -66,12 +70,19 @@ public class Main extends Application {
     }
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Pane p  = new Pane();
-        Cell[][] cellArray = drawSquares(p);
-        createAnimation(cellArray);
 
-        Scene scene = new Scene( p,500, 500);
+        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Scene scene = new Scene( root,500, 500);
+        Pane pane = (Pane) scene.lookup("#pane");
+        Cell[][] cellArray = drawSquares(pane);
+
+
+
+
         primaryStage.setScene(scene);
+        Label label = (Label ) scene.lookup("#label");
+
+        createAnimation(cellArray, label);
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
             @Override
@@ -102,7 +113,7 @@ public class Main extends Application {
 
     }
 
-    private void createAnimation(Cell[][] cellArray) {
+    private void createAnimation(Cell[][] cellArray, Label label) {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -119,7 +130,8 @@ public class Main extends Application {
                         Cell newCellPos = cellArray[i + horizontal][y + vertical];
                         newCellPos.setFillRed();
                     } else {
-                        System.out.println("game over");
+                        label.setText("Game over");
+
                     }
                 }
                 if (key == Key.Left) {
@@ -129,7 +141,7 @@ public class Main extends Application {
                         Cell newCellPos = cellArray[i + horizontal][y + vertical];
                         newCellPos.setFillRed();
                     } else {
-                        System.out.println("game over");
+                        label.setText("Game over");
                     }
                 }
                 if (key == Key.Up) {
@@ -138,6 +150,8 @@ public class Main extends Application {
                         vertical -= 1;
                         Cell newCellPos = cellArray[i + horizontal][y + vertical];
                         newCellPos.setFillRed();
+                    } else {
+                        label.setText("Game over");
                     }
 
                 }
@@ -147,6 +161,8 @@ public class Main extends Application {
                         vertical += 1;
                         Cell newCellPos = cellArray[i + horizontal][y + vertical];
                         newCellPos.setFillRed();
+                    } else {
+                        label.setText("Game over");
                     }
                 }
 

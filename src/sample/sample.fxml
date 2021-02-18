@@ -7,11 +7,12 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
 <GridPane fx:controller="sample.Controller"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+    <Pane fx:id="pane" />
 
-    <TextField fx:id="top" layoutX="171.0" layoutY="68.0"  />
-    <Label fx:id="label"/>
+    <Label fx:id="label" text="ahaha" />
 
 </GridPane>
 
