@@ -72,11 +72,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        Scene scene = new Scene( root,500, 500);
+        Scene scene = new Scene( root,500, 800);
         Pane pane = (Pane) scene.lookup("#pane");
         Cell[][] cellArray = drawSquares(pane);
-
-
 
 
         primaryStage.setScene(scene);
