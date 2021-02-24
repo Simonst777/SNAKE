@@ -22,11 +22,15 @@ public class Cell  {
         rectangle.setHeight(size);
         rectangle.setX(posX);
         rectangle.setY(posY);
-        rectangle.setFill(Color.RED);
+
+
     }
+    public Color originColor;
+
     public Rectangle getRectangle() {
         return rectangle;
     }
+
     public void setFillGray(){
         rectangle.setFill(Color.GRAY);
 
@@ -34,15 +38,23 @@ public class Cell  {
     public void setFillWhite(){
         rectangle.setFill(Color.WHITE);
     }
+
     public void setFillRed(){
         rectangle.setFill(Color.RED);
     }
+
     public boolean isRed(){
-        Paint curendColor = rectangle.getFill();
-        if (curendColor == Color.RED){
+        Paint currentColor = rectangle.getFill();
+        if (currentColor == Color.RED){
             return true;
         } else {
             return false;
+        }
+    }
+    
+    public void setOriginColor(){
+        if (this.posX != -1 && this.posY != -1) {
+            rectangle.setFill(originColor);
         }
     }
 

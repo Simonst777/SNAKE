@@ -1,29 +1,17 @@
 package sample;
-
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Ellipse;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.scene.Node;
 
-import java.util.Timer;
+import java.awt.*;
 
 
 public class Main extends Application {
@@ -42,7 +30,6 @@ public class Main extends Application {
     Key key = null;
 
 
-
     private Cell[][] drawSquares(Pane p){
         Cell cellArray[][] = new Cell[50][50];
         for (int i = 0; i < 50; i++) {
@@ -52,14 +39,19 @@ public class Main extends Application {
                 if (i % 2 == 0) {
                     if (j % 2 == 0) {
                     cell.setFillGray();
+                    cell.originColor = Color.GRAY;
+
                     } else {
                         cell.setFillWhite();
+                        cell.originColor = Color.WHITE;
                     }
                 } else {
                     if (j % 2 == 0) {
                         cell.setFillWhite();
+                        cell.originColor = Color.WHITE;
                     } else {
                         cell.setFillGray();
+                        cell.originColor = Color.GRAY;
                     }
                 }
                 p.getChildren().add(cell.getRectangle());
@@ -89,20 +81,15 @@ public class Main extends Application {
 
                 if ("Down".equals(keyEvent.getCode().getName()) ){
                     key = Key.Down;
-
-
                 }
                 if ("Up".equals(keyEvent.getCode().getName()) ){
                     key = Key.Up;
-
                 }
                 if ("Right".equals(keyEvent.getCode().getName()) ){
                     key = Key.Right;
-
                 }
                 if ("Left".equals(keyEvent.getCode().getName()) ){
                     key = Key.Left;
-
                 }
             }
         });
@@ -112,14 +99,18 @@ public class Main extends Application {
     }
 
     private void createAnimation(Cell[][] cellArray, Label label) {
+
+        Cell cell = cellArray[i][y];
+        cell.setFillRed();
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-
-                Cell cell = cellArray[i][y];
-                cell.setFillRed();
-
-
+                if (SnakeProperty.currentLenght >= SnakeProperty.minLengh){
+                SnakeProperty.clearTail(cellArray);
+                }
+                SnakeProperty.lastHorizontalPos = i+horizontal;
+                SnakeProperty.lastVerticalPos = i+vertical;
 
                 if (key == Key.Right) {
                     Cell cellOccupied = cellArray[i + horizontal + 1][y + vertical];
@@ -129,7 +120,6 @@ public class Main extends Application {
                         newCellPos.setFillRed();
                     } else {
                         label.setText("Game over");
-
                     }
                 }
                 if (key == Key.Left) {
@@ -163,12 +153,14 @@ public class Main extends Application {
                         label.setText("Game over");
                     }
                 }
+                SnakeProperty.lastColor = cellArray[i + horizontal][y + vertical].getRectangle().getFill();
 
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                SnakeProperty.currentLenght++;
             }
 
         };
