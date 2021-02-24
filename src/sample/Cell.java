@@ -52,7 +52,7 @@ public class Cell  {
         }
     }
 
-    public void setOriginColor(){
+    public void setOriginalColor(){
         if (this.posX != -1 && this.posY != -1) {
             rectangle.setFill(originColor);
         }

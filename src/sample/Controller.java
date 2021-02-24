@@ -31,10 +31,6 @@ public class Controller {
     private void printHelloWorld(ActionEvent event) {
         event.consume();
         System.out.println();
-
-
-
-
     }
 
     @FXML

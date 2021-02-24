@@ -11,14 +11,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.awt.*;
-
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Main extends Application {
-    int horizontal = 0;
-    int vertical = 0;
-    int i = 25;
-    int y = 25;
+    int horizontal = 25;
+    int vertical = 25;
 
 
     enum Key {
@@ -28,6 +26,7 @@ public class Main extends Application {
         Left
     }
     Key key = null;
+    boolean grow = false;
 
 
     private Cell[][] drawSquares(Pane p){
@@ -98,82 +97,107 @@ public class Main extends Application {
 
     }
 
+    private ArrayList<Food> createFood(Cell[][] cellArray) {
+        ArrayList<Food> foodItems = new ArrayList<Food>();
+        Random rand = new Random(10);
+        int int_random = rand.nextInt(60);
+        for(int i = 0; i < int_random; i++) {
+            Food newFood = new Food();
+            newFood.posX = rand.nextInt(50);
+            newFood.posY = rand.nextInt(50);
+            newFood.color = Color.GREEN;
+            cellArray[newFood.posX][newFood.posY].setFoodColor(newFood.color);
+            foodItems.add(newFood);
+        }
+        return foodItems;
+    }
+
     private void createAnimation(Cell[][] cellArray, Label label) {
 
-        Cell cell = cellArray[i][y];
-        cell.setFillRed();
+        SnakeProperty.addHead(cellArray[horizontal][vertical]);
+
+
+        ArrayList<Food> foodItems = createFood(cellArray);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (SnakeProperty.currentLenght >= SnakeProperty.minLengh){
-                SnakeProperty.clearTail(cellArray);
-                }
-                SnakeProperty.lastHorizontalPos = i+horizontal;
-                SnakeProperty.lastVerticalPos = i+vertical;
 
+                // last position of previous frame
+
+                int oldHorizontal = horizontal;
+                int oldVertical = vertical;
                 if (key == Key.Right) {
-                    Cell cellOccupied = cellArray[i + horizontal + 1][y + vertical];
-                    if (cellOccupied.isRed() == false ) {
+                    if (!SnakeProperty.isOccupied(horizontal, vertical)) {
                         horizontal += 1;
-                        Cell newCellPos = cellArray[i + horizontal][y + vertical];
-                        newCellPos.setFillRed();
+                        Cell newCellPos = cellArray[horizontal][vertical];
+                        SnakeProperty.addHead(newCellPos);
+                        SnakeProperty.clearTail(cellArray);
                     } else {
                         label.setText("Game over");
                     }
                 }
                 if (key == Key.Left) {
-                    Cell cellOccupied = cellArray[i + horizontal - 1][y + vertical];
-                    if (cellOccupied.isRed() == false ) {
+                    if (!SnakeProperty.isOccupied(horizontal, vertical)) {
                         horizontal -= 1;
-                        Cell newCellPos = cellArray[i + horizontal][y + vertical];
-                        newCellPos.setFillRed();
+                        Cell newCellPos = cellArray[horizontal][vertical];
+                        SnakeProperty.addHead(newCellPos);
+                        SnakeProperty.clearTail(cellArray);
                     } else {
                         label.setText("Game over");
                     }
                 }
                 if (key == Key.Up) {
-                    Cell cellOccupied = cellArray[i + horizontal][y + vertical - 1];
-                    if (cellOccupied.isRed() == false) {
+                    if (!SnakeProperty.isOccupied(horizontal, vertical)) {
                         vertical -= 1;
-                        Cell newCellPos = cellArray[i + horizontal][y + vertical];
-                        newCellPos.setFillRed();
+                        Cell newCellPos = cellArray[horizontal][vertical];
+                        SnakeProperty.addHead(newCellPos);
+                        SnakeProperty.clearTail(cellArray);
                     } else {
                         label.setText("Game over");
                     }
 
                 }
                 if (key == Key.Down) {
-                    Cell cellOccupied = cellArray[i + horizontal][y + vertical + 1];
-                    if (cellOccupied.isRed() == false) {
+                    if (!SnakeProperty.isOccupied(horizontal, vertical)) {
                         vertical += 1;
-                        Cell newCellPos = cellArray[i + horizontal][y + vertical];
-                        newCellPos.setFillRed();
+                        Cell newCellPos = cellArray[horizontal][vertical];
+                        SnakeProperty.addHead(newCellPos);
+                        SnakeProperty.clearTail(cellArray);
                     } else {
                         label.setText("Game over");
                     }
                 }
-                SnakeProperty.lastColor = cellArray[i + horizontal][y + vertical].getRectangle().getFill();
 
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                SnakeProperty.currentLenght++;
-                Food newFood = new Food();
-                newFood.posX = 5;
-                newFood.posY = 5;
-                newFood.color = Color.GREEN;
-                cellArray[newFood.posX][newFood.posY].setFoodColor(newFood.color);
 
-
+                // check if food is captured
+                if (foodWasEaten(foodItems, horizontal, vertical)) {
+                    Cell newCellPos = cellArray[oldHorizontal][oldVertical];
+                    SnakeProperty.addTail(newCellPos);
+                }
             }
 
         };
         timer.start();
     }
 
+    private static boolean foodWasEaten(ArrayList<Food> foodItems, int horizontal, int vertical) {
+        Food eatenFood = null;
+        for(Food food : foodItems) {
+            if(food.posX == horizontal && food.posY == vertical)
+                eatenFood = food;
+        }
+        if(eatenFood != null) {
+            foodItems.remove(eatenFood);
+            return true;
+        }
+        return false;
+    }
 
     public static void main(String[] args) {
         launch(args);
