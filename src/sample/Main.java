@@ -26,8 +26,7 @@ public class Main extends Application {
         Left
     }
     Key key = null;
-    boolean grow = false;
-
+    int points = 0;
 
     private Cell[][] drawSquares(Pane p){
         Cell cellArray[][] = new Cell[50][50];
@@ -70,6 +69,7 @@ public class Main extends Application {
 
         primaryStage.setScene(scene);
         Label label = (Label ) scene.lookup("#label");
+        label.setText("Current Points: " + 0);
 
         createAnimation(cellArray, label);
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -179,6 +179,8 @@ public class Main extends Application {
                 if (foodWasEaten(foodItems, horizontal, vertical)) {
                     Cell newCellPos = cellArray[oldHorizontal][oldVertical];
                     SnakeProperty.addTail(newCellPos);
+                    points++;
+                    label.setText("Current Points: " + points);
                 }
             }
 
