@@ -32,7 +32,7 @@ public class Cell  {
     }
 
     public void setFillGray(){
-        rectangle.setFill(Color.GRAY);
+        rectangle.setFill(Color.rgb(199,199,199));
 
     }
     public void setFillWhite(){
@@ -51,11 +51,14 @@ public class Cell  {
             return false;
         }
     }
-    
+
     public void setOriginColor(){
         if (this.posX != -1 && this.posY != -1) {
             rectangle.setFill(originColor);
         }
+    }
+    public void setFoodColor(Color color){
+        rectangle.setFill(color);
     }
 
     }

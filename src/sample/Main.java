@@ -39,7 +39,7 @@ public class Main extends Application {
                 if (i % 2 == 0) {
                     if (j % 2 == 0) {
                     cell.setFillGray();
-                    cell.originColor = Color.GRAY;
+                    cell.originColor = Color.rgb(199,199,199);
 
                     } else {
                         cell.setFillWhite();
@@ -51,7 +51,7 @@ public class Main extends Application {
                         cell.originColor = Color.WHITE;
                     } else {
                         cell.setFillGray();
-                        cell.originColor = Color.GRAY;
+                        cell.originColor = Color.rgb(199,199,199);
                     }
                 }
                 p.getChildren().add(cell.getRectangle());
@@ -161,6 +161,13 @@ public class Main extends Application {
                     e.printStackTrace();
                 }
                 SnakeProperty.currentLenght++;
+                Food newFood = new Food();
+                newFood.posX = 5;
+                newFood.posY = 5;
+                newFood.color = Color.GREEN;
+                cellArray[newFood.posX][newFood.posY].setFoodColor(newFood.color);
+
+
             }
 
         };
