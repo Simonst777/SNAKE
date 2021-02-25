@@ -22,9 +22,8 @@ public class Cell  {
         rectangle.setHeight(size);
         rectangle.setX(posX);
         rectangle.setY(posY);
-
-
     }
+
     public Color originColor;
 
     public Rectangle getRectangle() {

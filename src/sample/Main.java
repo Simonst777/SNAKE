@@ -25,7 +25,9 @@ public class Main extends Application {
         Right,
         Left
     }
+
     Key key = null;
+
     int points = 0;
 
     private Cell[][] drawSquares(Pane p){
@@ -115,10 +117,7 @@ public class Main extends Application {
     private void createAnimation(Cell[][] cellArray, Label label) {
 
         SnakeProperty.addHead(cellArray[horizontal][vertical]);
-
-
         ArrayList<Food> foodItems = createFood(cellArray);
-
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
